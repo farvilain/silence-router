@@ -1,0 +1,26 @@
+{
+  "name": "silence-router",
+  "version": "0.0.1",
+  "description": "Silence-router is just a router for Rest Service",
+  "author": {
+    "name": "Francois A.R. Vilain",
+    "email": "far.vilain@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/farvilain/silence-router.git"
+  },
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "mocha test/ --recursive -R spec",
+    "coverageUnit": "mkdir perso -p && jscoverage lib lib-cov && env COVERAGE=1  mocha test/unit/ --recursive --reporter html-cov > perso/coverage-unit.html",
+    "coverageInteg": "mkdir perso -p && jscoverage lib lib-cov && env COVERAGE=1  mocha test/integration/ --recursive --reporter html-cov > perso/coverage-integ.html",
+    "coveragee2e": "mkdir perso -p && jscoverage lib lib-cov && env COVERAGE=1  mocha test/e2e/ --recursive --reporter html-cov > perso/coverage-e2e.html"
+  },
+  "devDependencies": {
+    "jscoverage": "~0.6.0",
+    "jshint": "^2.8.0",
+    "mocha": "2.3.2",
+    "sinon": "1.16.1"
+  }
+}
