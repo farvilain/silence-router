@@ -19,8 +19,8 @@
     "coveragee2e": "mkdir perso -p && jscoverage lib lib-cov && env COVERAGE=1  mocha test/e2e/ --recursive --reporter html-cov > perso/coverage-e2e.html"
   },
   "devDependencies": {
-    "jscoverage": "~0.6.0",
-    "jshint": "^2.8.0",
+    "jscoverage": "0.6.0",
+    "jshint": "2.8.0",
     "mocha": "2.3.2",
     "sinon": "1.16.1"
   }
