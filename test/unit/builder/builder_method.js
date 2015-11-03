@@ -5,6 +5,7 @@ var assertNode = require('../../util/assertNode');
 
 var f1 = function(){};
 var f2 = function(){};
+var f3 = function(){};
 
 describe("builder", function(){
 	describe("method()", function(){
@@ -58,5 +59,28 @@ describe("builder", function(){
 				}, /Varargs second param must contains only functions/);
 			});
 		});
+		it("add a default OPTION", function(){
+			var b = builder(f2);
+			b.method("GET", f1);
+			assert.deepEqual(b.getAct().methods, {"GET":[f1], "OPTIONS": [f2]});
+		});
+		it("add a default OPTION as array", function(){
+			var b = builder([f3,f2]);
+			b.method("GET", f1);
+			assert.deepEqual(b.getAct().methods, {"GET":[f1], "OPTIONS": [f3, f2]});
+		});
+		it("do not override presseted OPTIONS", function(){
+			var b = builder([f3]);
+			b.method("OPTIONS", f2);
+			b.method("GET",f1)
+			assert.deepEqual(b.getAct().methods, {"GET":[f1], "OPTIONS": [f2]});
+		});
+		it("can override default OPTIONS", function(){
+			var b = builder([f3]);
+			b.method("GET",f1)
+			b.method("OPTIONS", f2);
+			assert.deepEqual(b.getAct().methods, {"GET":[f1], "OPTIONS": [f2]});
+		});
+
 	});
 });
