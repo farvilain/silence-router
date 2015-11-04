@@ -30,7 +30,7 @@ describe("accumulator()",function(){
 		});
 	});
 
-	describe("with single key method object",function(){
+	describe("with single key method object and no name",function(){
 		var endpoint = sinon.stub().returns({
 			methods : {}
 		});
@@ -76,6 +76,9 @@ describe("accumulator()",function(){
 				it("method is GET", function(){
 					assert(acc.result[0].methods.GET.fcts);
 				});
+				it("method GET has no name", function(){
+					assert.deepEqual(acc.result[0].methods.GET.name, undefined);
+				});
 				it("method GET has fcts", function(){
 					assert.deepEqual(acc.result[0].methods.GET.fcts,["use","fct"]);
 				});
@@ -92,7 +95,7 @@ describe("accumulator()",function(){
 			paramNames : ["param"]
 		});
 		var acc = accumulator(endpoint, pathsToRegexp);
-		acc({"GET":{fcts:["getFct"]}, "POST": {fcts:["postFct"]}}, ["path"], ["use"]);
+		acc({"GET":{fcts:["getFct"]}, "POST": {name:'test',fcts:["postFct"]}}, ["path"], ["use"]);
 
 		describe("endpoint()", function(){
 			it("is called once", function(){
@@ -133,8 +136,14 @@ describe("accumulator()",function(){
 				it("method GET has fcts", function(){
 					assert.deepEqual(acc.result[0].methods.GET.fcts,["use","getFct"]);
 				});
+				it("method GET has no name", function(){
+					assert.deepEqual(acc.result[0].methods.GET.name, undefined);
+				});
 				it("method is POST", function(){
 					assert(acc.result[0].methods.POST);
+				});
+				it("method POST has the name", function(){
+					assert.deepEqual(acc.result[0].methods.POST.name, "test");
 				});
 				it("method POST has fcts", function(){
 					assert.deepEqual(acc.result[0].methods.POST.fcts,["use","postFct"]);
