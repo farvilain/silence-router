@@ -29,6 +29,11 @@ describe("builder", function(){
 			b.method("GET", f1);
 			assert.deepEqual(b.getAct().methods, {"GET": {fcts:[f1]}});
 		});
+		it("add the name if provided", function(){
+			var b = builder();
+			b.method("GET", "test",f1);
+			assert.deepEqual(b.getAct().methods, {"GET": {name:'test',fcts:[f1]}});
+		});
 		it("add all the methods", function(){
 			var b = builder();
 			b.method("GET", f1, f2);
