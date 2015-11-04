@@ -47,7 +47,7 @@ describe("builder", function(){
 			});
 		});
 
-		[null, undefined, 1, "a", [], {} , /abc/].forEach(function(badValue){
+		[null, undefined, 1,  [], {} , /abc/].forEach(function(badValue){
 			it("refuses second param "+badValue, function(){
 				assert.throws(function(){
 					builder().method("GET", badValue);
