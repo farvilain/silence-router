@@ -15,11 +15,14 @@ describe("Creating endpoints", function(){
 				regexp : /^\/$/,
 				paramNames: [],
 				methods : {
-					"GET" : [func1]
+					"GET" : { fcts : [func1] }
 				}
 			}
 		];
-		assert.deepEqual(endpoints, expected);
+		assert.deepEqual(Object.keys(endpoints), Object.keys(expected));
+		assert.deepEqual(endpoints.regexp, expected.regexp);
+		assert.deepEqual(endpoints.paramNames, expected.paramNames);
+		assert.deepEqual(endpoints.methods, expected.methods);
 		assert.strictEqual(func1.callCount, 0);
 	});
 
@@ -31,11 +34,14 @@ describe("Creating endpoints", function(){
 				regexp : /^\/lol$/,
 				paramNames: [],
 				methods : {
-					"GET" : [func1]
+					"GET" : { fcts : [func1] }
 				}
 			}
 		];
-		assert.deepEqual(endpoints, expected);
+		assert.deepEqual(Object.keys(endpoints), Object.keys(expected));
+		assert.deepEqual(endpoints.regexp, expected.regexp);
+		assert.deepEqual(endpoints.paramNames, expected.paramNames);
+		assert.deepEqual(endpoints.methods, expected.methods);
 		assert.strictEqual(func1.callCount, 0);
 	});
 

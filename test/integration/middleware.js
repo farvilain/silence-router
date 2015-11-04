@@ -12,7 +12,7 @@ describe("Middleware", function(){
 		var endpoints = [{
 			regexp : /^\/some\/path/,
 			methods : {
-				'GET' : []
+				'GET' : { fcts : [] }
 			}
 		}];
 		var mw = middleware(endpoints, badRequest, notAllowed);
@@ -37,7 +37,7 @@ describe("Middleware", function(){
 		var endpoints = [{
 			regexp : /^\/some\/path/,
 			methods : {
-				'GET' : []
+				'GET' : { fcts : [] }
 			}
 		}];
 		var mw = middleware(endpoints, badRequest, notAllowed);
@@ -77,7 +77,7 @@ describe("Middleware", function(){
 		var endpoints = [{
 			regexp : /^\/some\/path/,
 			methods : {
-				'GET' : []
+				'GET' : { fcts : [] }
 			}
 		}];
 		var mw = middleware(endpoints, badRequest, notAllowed);
@@ -118,7 +118,7 @@ describe("Middleware", function(){
 		var endpoints = [{
 			regexp : /^\/some\/path/,
 			methods : {
-				'GET' : [getMethod]
+				'GET' : { fcts : [getMethod]}
 			}
 		}];
 		var mw = middleware(endpoints, badRequest, notAllowed);
@@ -169,7 +169,7 @@ describe("notAllowed", function (){
 		var endpoints = [{
 			regexp : /^\/some\/path/,
 			methods : {
-				'GET' : []
+				'GET' : { fcts : [] }
 			}
 		}];
 		var mw = middleware(endpoints, badRequest, notAllowed);
@@ -210,7 +210,7 @@ describe("notAllowed", function (){
 		var endpoints = [{
 			regexp : /^\/some\/path/,
 			methods : {
-				'GET' : [getMethod]
+				'GET' : { fcts : [getMethod]}
 			}
 		}];
 		var mw = middleware(endpoints, badRequest, notAllowed);
@@ -253,7 +253,7 @@ describe("notAllowed", function (){
 		var endpoints = [{
 			regexp : /^\/some\/path/,
 			methods : {
-				'GET' : [getMethod]
+				'GET' : { fcts : [getMethod]}
 			}
 		}];
 		var mw = middleware(endpoints, badRequest, notAllowed);

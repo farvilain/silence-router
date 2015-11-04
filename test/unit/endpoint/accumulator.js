@@ -39,7 +39,7 @@ describe("accumulator()",function(){
 			paramNames : ["param"]
 		});
 		var acc = accumulator(endpoint, pathsToRegexp);
-		acc({"GET":["fct"]}, ["path"], ["use"]);
+		acc({"GET":{fcts:["fct"]}}, ["path"], ["use"]);
 		describe("endpoint()", function(){
 			it("is called once", function(){
 				assert.strictEqual(endpoint.callCount, 1);
@@ -74,10 +74,10 @@ describe("accumulator()",function(){
 					assert.strictEqual(Object.keys(acc.result[0].methods).length, 1);
 				});
 				it("method is GET", function(){
-					assert(acc.result[0].methods.GET);
+					assert(acc.result[0].methods.GET.fcts);
 				});
 				it("method GET has fcts", function(){
-					assert.deepEqual(acc.result[0].methods.GET,["use","fct"]);
+					assert.deepEqual(acc.result[0].methods.GET.fcts,["use","fct"]);
 				});
 			});
 		});
@@ -92,7 +92,7 @@ describe("accumulator()",function(){
 			paramNames : ["param"]
 		});
 		var acc = accumulator(endpoint, pathsToRegexp);
-		acc({"GET":["getFct"], "POST": ["postFct"]}, ["path"], ["use"]);
+		acc({"GET":{fcts:["getFct"]}, "POST": {fcts:["postFct"]}}, ["path"], ["use"]);
 
 		describe("endpoint()", function(){
 			it("is called once", function(){
@@ -131,13 +131,13 @@ describe("accumulator()",function(){
 					assert(acc.result[0].methods.GET);
 				});
 				it("method GET has fcts", function(){
-					assert.deepEqual(acc.result[0].methods.GET,["use","getFct"]);
+					assert.deepEqual(acc.result[0].methods.GET.fcts,["use","getFct"]);
 				});
 				it("method is POST", function(){
 					assert(acc.result[0].methods.POST);
 				});
 				it("method POST has fcts", function(){
-					assert.deepEqual(acc.result[0].methods.POST,["use","postFct"]);
+					assert.deepEqual(acc.result[0].methods.POST.fcts,["use","postFct"]);
 				});
 			});
 		});

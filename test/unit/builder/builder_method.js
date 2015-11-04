@@ -27,12 +27,12 @@ describe("builder", function(){
 		it("add the method", function(){
 			var b = builder();
 			b.method("GET", f1);
-			assert.deepEqual(b.getAct().methods, {"GET": [f1]});
+			assert.deepEqual(b.getAct().methods, {"GET": {fcts:[f1]}});
 		});
 		it("add all the methods", function(){
 			var b = builder();
 			b.method("GET", f1, f2);
-			assert.deepEqual(b.getAct().methods, {"GET":[f1,f2]});
+			assert.deepEqual(b.getAct().methods, {"GET": {fcts:[f1,f2]}});
 		});
 		it("refuses empty list functions", function(){
 			assert.throws(function(){
@@ -62,24 +62,24 @@ describe("builder", function(){
 		it("add a default OPTION", function(){
 			var b = builder(f2);
 			b.method("GET", f1);
-			assert.deepEqual(b.getAct().methods, {"GET":[f1], "OPTIONS": [f2]});
+			assert.deepEqual(b.getAct().methods, {"GET":{ fcts : [f1]}, "OPTIONS": { fcts : [f2]}});
 		});
 		it("add a default OPTION as array", function(){
 			var b = builder([f3,f2]);
 			b.method("GET", f1);
-			assert.deepEqual(b.getAct().methods, {"GET":[f1], "OPTIONS": [f3, f2]});
+			assert.deepEqual(b.getAct().methods, {"GET":{ fcts : [f1]}, "OPTIONS": { fcts : [f3, f2]}});
 		});
 		it("do not override presseted OPTIONS", function(){
 			var b = builder([f3]);
 			b.method("OPTIONS", f2);
 			b.method("GET",f1)
-			assert.deepEqual(b.getAct().methods, {"GET":[f1], "OPTIONS": [f2]});
+			assert.deepEqual(b.getAct().methods, {"GET":{ fcts : [f1]}, "OPTIONS": { fcts : [f2]} });
 		});
 		it("can override default OPTIONS", function(){
 			var b = builder([f3]);
 			b.method("GET",f1)
 			b.method("OPTIONS", f2);
-			assert.deepEqual(b.getAct().methods, {"GET":[f1], "OPTIONS": [f2]});
+			assert.deepEqual(b.getAct().methods, {"GET": { fcts : [f1] }, "OPTIONS": { fcts : [f2] } });
 		});
 
 	});
