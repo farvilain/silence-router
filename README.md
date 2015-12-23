@@ -116,6 +116,7 @@ You can add a subpath with a name starting with `:` that will be populated into 
 				.get(userGet)
 				.delete(userDelete)
 		.createMW(badRequest, notAllowed);
+```
 
 
 
