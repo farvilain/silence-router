@@ -76,7 +76,7 @@ describe('pathsToRegexp()',function(){
 				assert.strictEqual(regexpAndParams.getCall(0).args.length,2);
 			});
 			it("with first params is the good regexp", function(){
-				assert.deepEqual(regexpAndParams.getCall(0).args[0], /^\/([^\/]*)$/);
+				assert.deepEqual(regexpAndParams.getCall(0).args[0], /^\/([^\/]+)$/);
 			});
 			it("with 'name' paranNames", function(){
 				assert.deepEqual(regexpAndParams.getCall(0).args[1],['name']);
