@@ -25,6 +25,6 @@
     "sinon": "1.17.2"
   },
   "dependencies": {
-    "silence-log": "0.0.1"
+    "silence-log": "0.0.3"
   }
 }
