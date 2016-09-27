@@ -26,6 +26,6 @@
   },
   "dependencies": {
     "silence-chainexecutor": "0.0.5",
-    "silence-log": "0.0.3"
+    "silence-log": "0.0.4"
   }
 }
