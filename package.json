@@ -25,6 +25,7 @@
     "sinon": "1.17.2"
   },
   "dependencies": {
+    "silence-chainexecutor": "0.0.5",
     "silence-log": "0.0.3"
   }
 }

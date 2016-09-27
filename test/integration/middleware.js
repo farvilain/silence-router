@@ -281,6 +281,9 @@ describe("notAllowed", function (){
 				assert.strictEqual(1, next.callCount);
 			});
 			it("with no param", function(){
+				console.log();
+				console.log("==>",next.getCall(0).args);
+				console.log();
 				assert.strictEqual(0, next.getCall(0).args.length);
 			});
 		});
