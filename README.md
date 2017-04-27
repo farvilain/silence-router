@@ -89,25 +89,6 @@ You can of course specify it by yourself.
 
 ```
 
-But silence-router allows you to define a default OPTIONS handler that will be used on every defined uri, unless you override it.
-
-
-```javascript
-
-	function globalOptions(req, res, next){
-		//Your code here
-		next();
-	}
-
-	var router = require('silence-builder')({optionsHandler:globalOptions})
-		.path("user")
-			.post(createUser)
-			.get(listUser)
-			.options(someFunction)
-		.createMW(badRequest, notAllowed);
-
-```
-
 ### I need path variable
 
 You can add a subpath with a name starting with `:` that will be populated into req.params.
@@ -122,7 +103,7 @@ You can add a subpath with a name starting with `:` that will be populated into 
 		//Retrieve user via req.params.userId
 	}
 
-	var router = require('silence-builder')({optionsHandler:globalOptions})
+	var router = require('silence-builder')()
 		.path("user")
 			.post(createUser)
 			.get(listUser)
@@ -141,7 +122,7 @@ Simply use ̀.parent()` to go up the path hierarchy.
 
 ```javascript
 
-	var router = require('silence-builder')({optionsHandler:globalOptions})
+	var router = require('silence-builder')()
 		.path("user")
 			.post(createUser)
 			.get(listUser)
@@ -161,7 +142,7 @@ Be aware that the router will always find the first matche, definition order is 
 Look at the following example:
 
 ```javascript
-	var router = require('silence-builder')({optionsHandler:globalOptions})
+	var router = require('silence-builder')()
 		.path("user")
 			.post(createUser)
 			.get(listUser)
@@ -178,7 +159,7 @@ Look at the following example:
 The `whoAmi` will never be called, just invert two blocks and you problem will be solved.
 
 ```javascript
-	var router = require('silence-builder')({optionsHandler:globalOptions})
+	var router = require('silence-builder')()
 		.path("user")
 			.post(createUser)
 			.get(listUser)
@@ -221,7 +202,7 @@ Than can be very usefull in some case, see the exemple below.
 		next();
 	}
 
-	var router = require('silence-builder')({optionsHandler:globalOptions})
+	var router = require('silence-builder')()
 		.path("user")
 			.post(createUser)
 			.get(listUser)
@@ -242,7 +223,7 @@ It could be very usefull for log to know which endpoint has been use without hav
 You can simply add a name for a handler as first optionnal parameter and silence-router will manage to set the variable `req.name`.
 
 ```javascript
-	var router = require('silence-builder')({optionsHandler:globalOptions})
+	var router = require('silence-builder')()
 		.path("user")
 			.post("createUser", createUser)
 			.get("listUser", listUser)
@@ -274,21 +255,7 @@ You can simply add a name for a handler as first optionnal parameter and silence
 
 ## <a name='method_constructor'>Constructor</a>
 
-```javascript
-{
-  optionsHandler : true | function(req,res,next) | (null/undefined/false)
-}
-```
-
-If setted to true, the following method will be used:
-
-```javascript
-function defaultOptionsHandler(req, res, next){
-	next();
-}
-```
-
-Any falsy value is "do not use defaultOptionsHandler"
+Create a new router builder.
 
 ## <a name='method_createMW'>createMW</a>
 
