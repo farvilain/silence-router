@@ -1,10 +1,8 @@
 # silence-router 
 
-A web router for NodeJS, compatible with Connect middlewares. The main goal is to provide a global `function (req, res, next)` that can do different work regarding the `req.method` and `req.path` values.
+A request router for NodeJS, compatible with Connect middlewares.
 
-Notice that it will also fill `res.allowedmethods` with the list of methods implemented on the path, ie `['POST', 'GET']`.
-
-
+The main goal is to provide a global `function (req, res, next)` that can do different work regarding the `req.method` and `req.path` values.
 
 [Getting started](#GettingStarted)
 
@@ -35,7 +33,6 @@ In your project main directory, type `npm install silence-router`
 ```
 
 This will returns a function (req, res, next) than you will always proceed the badRequest method.
-You can also see that `res.allowedmethods` will always equals `[]`.
 
 ### It's not working, I never have `req.path` setted.
 
@@ -53,26 +50,26 @@ function reqPath(req,res, next){
 
 ```javascript
 
-    function createUser(req, res, next){
+    function userCreate(req, res, next){
     	//Create the user here and send the response you want
     	next();
     }
 
-    function listUser(req, res, next){
+    function userList(req, res, next){
     	//List users here and send the response you want
     	next();
     }
 
 	var router = require('silence-builder')()
 		.path("user")
-			.post(createUser)
-			.get(listUser)
+			.post("userCreate", userCreate)
+			.get("userList", userList)
 		.createMW(badRequest, notAllowed);
 
 ```
 
-Now you can handle `POST /user` and `GET /user` correctly with `res.allowedmethods` equals to `['POST','GET']`
-
+Now you can handle `POST /user` and `GET /user`. You can see that if there is a route match, `res.matchedResource` contains the resource matched.
+You MUST give the function name as first param, sorry for this choice but I'm not very fan of optionnal things.
 
 ### I'd like to handle the OPTIONS verb
 
@@ -82,9 +79,9 @@ You can of course specify it by yourself.
 
 	var router = require('silence-builder')()
 		.path("user")
-			.post(createUser)
-			.get(listUser)
-			.options(someFunction)
+			.post("userCreate", userCreate)
+			.get("userList", userList)
+			.options("userOptions", someFunction)
 		.createMW(badRequest, notAllowed);
 
 ```
@@ -105,12 +102,12 @@ You can add a subpath with a name starting with `:` that will be populated into 
 
 	var router = require('silence-builder')()
 		.path("user")
-			.post(createUser)
-			.get(listUser)
-			.options(someFunction)
+			.post("userCreate", userCreate)
+			.get("userList", userList)
+			.options("userOptions", someFunction)
 			.path(":userId")
-				.get(userGet)
-				.delete(userDelete)
+				.get("userGet", userGet)
+				.delete("userDelete", userDelete)
 		.createMW(badRequest, notAllowed);
 ```
 
@@ -124,15 +121,15 @@ Simply use ̀.parent()` to go up the path hierarchy.
 
 	var router = require('silence-builder')()
 		.path("user")
-			.post(createUser)
-			.get(listUser)
-			.options(someFunction)
+			.post("userCreate", userCreate)
+			.get("userList", userList)
+			.options("userOptions", someFunction)
 			.path(":userId")
-				.get(userGet)
+				.get("userGet", userGet)
 			.parent()
 		.parent()
 		.path("other")
-			.get(somethingHere)
+			.get("otherGet", somethingHere)
 		.createMW(badRequest, notAllowed);
 
 ```
@@ -144,15 +141,15 @@ Look at the following example:
 ```javascript
 	var router = require('silence-builder')()
 		.path("user")
-			.post(createUser)
-			.get(listUser)
-			.options(someFunction)
+			.post("userCreate", userCreate)
+			.get("userList", userList)
+			.options("userOptions", someFunction)
 			.path(":userId")
-				.get(userGet)
-				.delete(userDelete)
+				.get("userGet", userGet)
+				.delete("userDelete", userDelete)
 			.parent()
 			.path("me")
-				.get(whoAmi)
+				.get("whoAmI", whoAmi)
 		.createMW(badRequest, notAllowed);
 ```
 
@@ -161,15 +158,15 @@ The `whoAmi` will never be called, just invert two blocks and you problem will b
 ```javascript
 	var router = require('silence-builder')()
 		.path("user")
-			.post(createUser)
-			.get(listUser)
-			.options(someFunction)
+			.post("userCreate", userCreate)
+			.get("userList", userList)
+			.options("userOptions", someFunction)
 			.path("me")
-				.get(whoAmi)
+				.get("whoAmI", whoAmi)
 			.parent()
 			.path(":userId")
-				.get(userGet)
-				.delete(userDelete)
+				.get("userGet", userGet)
+				.delete("userDelete", userDelete)
 			.parent()
 		.createMW(badRequest, notAllowed);
 ```
@@ -204,36 +201,15 @@ Than can be very usefull in some case, see the exemple below.
 
 	var router = require('silence-builder')()
 		.path("user")
-			.post(createUser)
-			.get(listUser)
-			.options(someFunction)
+			.post("userCreate", userCreate)
+			.get("userList", userList)
+			.options("userOptions", someFunction)
 			.path(":userId", loadUser, doALog)
-				.get(userGet)
+				.get("userGet", userGet)
 			.parent()
 		.parent()
 		.path("other")
-			.get(somethingHere)
-		.createMW(badRequest, notAllowed);
-
-```
-
-### Having a name on request
-
-It could be very usefull for log to know which endpoint has been use without having to search for a http verb + a regular express on uri.
-You can simply add a name for a handler as first optionnal parameter and silence-router will manage to set the variable `req.name`.
-
-```javascript
-	var router = require('silence-builder')()
-		.path("user")
-			.post("createUser", createUser)
-			.get("listUser", listUser)
-			.options(someFunction)
-			.path(":userId", loadUser, doALog)
-				.get("getUser", userGet)
-			.parent()
-		.parent()
-		.path("other")
-			.get("unamedMethod", somethingHere)
+			.get("otherGet", somethingHere)
 		.createMW(badRequest, notAllowed);
 
 ```
@@ -244,7 +220,7 @@ You can simply add a name for a handler as first optionnal parameter and silence
 * [createMW](#method_createMW)
 * [path](#method_path)
 * [parent](#method_parent)
-* [use](#method_use)
+* [use](#method_before)
 * [method](#method_method)
 * [options](#method_options)
 * [head](#method_head)
@@ -253,71 +229,3 @@ You can simply add a name for a handler as first optionnal parameter and silence
 * [patch](#method_patch)
 * [del](#method_del)
 
-## <a name='method_constructor'>Constructor</a>
-
-Create a new router builder.
-
-## <a name='method_createMW'>createMW</a>
-
-## <a name='method_path'>path</a> (path, _fcts)
-
-Arguments : 
-	* path
-	* _fcts
-
-## <a name='method_parent'>parent</a> : function()
-
-Arguments : none
-
-## <a name='method_use'>use</a> (_fcts)
-
-Arguments : 
-	* _fcts
-
-## <a name='method_method'>method</a> : function(verb, name, _fct)
-
-Arguments : 
-	* verb
-	* name
-	* _fcts
-
-## <a name='method_options'>options</a> (name, _fct)
-
-This function is just an helper on [method](#method_method), using "OPTIONS" for verb param.
-
-
-## <a name='method_head'>head</a> (name, _fct)
-
-This function is just an helper on [method](#method_method), using "HEAD" for verb param.
-
-## <a name='method_get'>get</a>
-
-This function is just an helper on [method](#method_method), using "GET" for verb param
-
-Arguments : 
-	* name
-	* _fcts
-
-## <a name='method_put'>put</a>
-
-This function is just an helper on [method](#method_method), using "PUT" for verb param
-
-Arguments : 
-	* name
-	* _fcts
-
-## <a name='method_patch'>patch</a>
-
-This function is just an helper on [method](#method_method), using "PATCH" for verb param
-
-Arguments : 
-	* name
-	* _fcts
-
-## <a name='method_del'>del</a>
-
-This function is just an helper on [method](#method_method), using "DELETE" for verb param
-
-Arguments : 
-	* name
-	* _fcts
