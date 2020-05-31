@@ -25,7 +25,7 @@
     "test": "exit 1"
   },
   "dependencies": {
-    "silence-chainexecutor": "^0.1.0",
+    "silence-chainexecutor": "^1.0.1",
     "silence-log": "0.0.4"
   }
 }
